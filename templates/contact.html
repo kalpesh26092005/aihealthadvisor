@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact - HealthAdvisor</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2ecc71;
+            --primary-dark: #27ae60;
+            --secondary: #3498db;
+            --accent: #9b59b6;
+            --danger: #e74c3c;
+            --warning: #f39c12;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --gray: #95a5a6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: var(--dark);
+            overflow-x: hidden;
+        }
+
+        /* Header/Navbar Styles - Same as ai.html */
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #2ecc71;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo span {
+            color: #27ae60;
+        }
+
+        .navbar {
+            background-color: #fff;
+            padding: 20px 0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-links a {
+            margin-left: 25px;
+            text-decoration: none;
+            font-weight: 500;
+            color: var(--dark);
+            position: relative;
+            transition: color 0.3s;
+        }
+
+        .nav-links a::after {
+            content: "";
+            position: absolute;
+            width: 0%;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background-color: var(--primary-dark);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .nav-links a.active {
+            color: var(--primary);
+        }
+
+        .nav-links a.active::after {
+            width: 100%;
+        }
+
+        /* Contact Hero Section */
+        .contact-hero {
+            background: linear-gradient(135deg, #2ecc71, #3498db);
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+        }
+
+        .contact-hero h1 {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .contact-hero p {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Contact Container */
+        .contact-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+
+        /* Contact Grid */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            margin-bottom: 60px;
+        }
+
+        /* Contact Form */
+        .contact-form {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.1);
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 150px;
+        }
+
+        .submit-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+        }
+
+        .submit-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(46, 204, 113, 0.3);
+        }
+
+        /* Contact Info */
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .info-card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            transition: transform 0.3s;
+        }
+
+        .info-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .info-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            background: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .info-content h3 {
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+
+        .info-content p {
+            color: var(--gray);
+            line-height: 1.6;
+        }
+
+        /* FAQ Section */
+        .faq-section {
+            margin-top: 60px;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--dark);
+            margin-bottom: 15px;
+        }
+
+        .section-title p {
+            color: var(--gray);
+            font-size: 1.1rem;
+        }
+
+        .faq-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+        }
+
+        .faq-card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s;
+        }
+
+        .faq-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+        }
+
+        .faq-card h3 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .faq-card h3 i {
+            font-size: 1.2rem;
+        }
+
+        .faq-card p {
+            color: var(--gray);
+            line-height: 1.6;
+        }
+
+        /* Support Features */
+        .support-features {
+            margin-top: 60px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 35px 25px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.12);
+        }
+
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            background: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            color: white;
+            font-size: 2rem;
+        }
+
+        .feature-card h3 {
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+
+        .feature-card p {
+            color: var(--gray);
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .feature-btn {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            padding: 10px 25px;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .feature-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Footer Styles - Same as ai.html */
+        .footer {
+            background-color: #303131;
+            color: #ccc;
+            padding: 40px 20px 20px;
+            margin-top: 60px;
+        }
+
+        .footer-top {
+            display: flex;
+            justify-content: space-around;
+            text-align: center;
+            padding-bottom: 30px;
+            border-bottom: 1px solid #333;
+            flex-wrap: wrap;
+        }
+
+        .footer-contact {
+            max-width: 300px;
+            margin: 10px;
+        }
+
+        .footer-contact i {
+            font-size: 30px;
+            color: #00aaff;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .footer-contact p {
+            color: #fff;
+        }
+
+        .footer-middle {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            padding: 40px 20px;
+        }
+
+        .footer-links,
+        .footer-subscribe {
+            flex: 1;
+            min-width: 200px;
+            margin: 20px;
+        }
+
+        .footer-links h3,
+        .footer-subscribe h3 {
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        .footer-links ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-links ul li {
+            margin-bottom: 8px;
+            color: #999;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .footer-links ul li:hover {
+            color: #00aaff;
+        }
+
+        .footer-subscribe form {
+            display: flex;
+            max-width: 300px;
+        }
+
+        .footer-subscribe input[type="email"] {
+            padding: 10px;
+            flex: 1;
+            border: none;
+            border-radius: 3px 0 0 3px;
+        }
+
+        .footer-subscribe button {
+            background: #00aaff;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 0 3px 3px 0;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .footer-subscribe button:hover {
+            background: #0088cc;
+        }
+
+        .footer-subscribe p {
+            font-size: 12px;
+            margin-top: 10px;
+            color: #777;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #333;
+            padding-top: 20px;
+            text-align: center;
+            font-size: 14px;
+            color: #777;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .social-icons {
+            margin-top: 10px;
+        }
+
+        .social-icons i {
+            margin: 0 10px;
+            color: #ccc;
+            cursor: pointer;
+            font-size: 16px;
+            transition: color 0.3s;
+        }
+
+        .social-icons i:hover {
+            color: #00aaff;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links a {
+                margin-left: 15px;
+                font-size: 0.9rem;
+            }
+            
+            .contact-hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .contact-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            
+            .contact-form {
+                padding: 25px;
+            }
+            
+            .faq-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-top,
+            .footer-middle {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header/Navbar - Same as ai.html -->
+    <header class="navbar">
+        <div class="container">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='img/logo.jpg') }}" alt="Logo" height="40" style="vertical-align: middle;">
+                <span>HealthAdvisor</span>
+            </div>
+            <nav class="nav-links">
+                <a href="{{ url_for('home') }}">Home Page</a>
+                <a href="{{ url_for('symptoms') }}">Symptoms Page</a>
+                <a href="{{ url_for('dashboard') }}">Dashboard</a>
+                <a href="{{ url_for('contact') }}" class="active">Contact</a>
+                <a href="{{ url_for('ai') }}"><i class="fa-solid fa-microchip"></i></a>
+                {% if session.user_id %}
+        <a href="{{ url_for('logout') }}" class="logout-btn">
+            <i class="fa-solid fa-right-from-bracket"></i> Logout
+        </a>
+    {% else %}
+        <a href="{{ url_for('login') }}" class="login-btn">
+            <i class="fa-solid fa-right-to-bracket"></i> Login
+        </a>
+    {% endif %}
+            </nav>
+        </div>
+    </header>
+
+    <!-- Contact Hero Section -->
+    <section class="contact-hero">
+        <div class="container">
+            <h1>Get In Touch With Us</h1>
+            <p>We're here to help you with your health journey. Contact us for support, questions, or feedback about HealthAdvisor.</p>
+        </div>
+    </section>
+
+    <!-- Contact Content -->
+    <div class="contact-container">
+        <!-- Contact Grid -->
+        <div class="contact-grid">
+            <!-- Contact Form -->
+            <div class="contact-form">
+                <h2 style="margin-bottom: 30px; color: var(--dark);">Send us a Message</h2>
+                <form id="contactForm" onsubmit="submitContactForm(event)">
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" class="form-control" placeholder="Enter your full name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" class="form-control" placeholder="Enter your email address" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="subject">Subject</label>
+                        <input type="text" id="subject" class="form-control" placeholder="What is this regarding?" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="message">Your Message</label>
+                        <textarea id="message" class="form-control" placeholder="Tell us how we can help you..." required></textarea>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-paper-plane"></i> Send Message
+                    </button>
+                </form>
+            </div>
+
+            <!-- Contact Information -->
+            <div class="contact-info">
+                <div class="info-card">
+                    <div class="info-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <div class="info-content">
+                        <h3>Our Location</h3>
+                        <p>17 Amba wadi, Achole road<br>Nallasopara (East), Palghar 401209<br>Maharashtra, India</p>
+                    </div>
+                </div>
+                
+                <div class="info-card">
+                    <div class="info-icon">
+                        <i class="fas fa-phone"></i>
+                    </div>
+                    <div class="info-content">
+                        <h3>Phone Number</h3>
+                        <p>+91 70589 03447<br>Monday - Friday: 9:00 AM - 6:00 PM</p>
+                    </div>
+                </div>
+                
+                <div class="info-card">
+                    <div class="info-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="info-content">
+                        <h3>Email Address</h3>
+                        <p>kalpeshdukhande1@gmail.com<br>support@healthadvisor.com</p>
+                    </div>
+                </div>
+                
+                <div class="info-card">
+                    <div class="info-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="info-content">
+                        <h3>Working Hours</h3>
+                        <p>Monday - Friday: 9:00 AM - 6:00 PM<br>Saturday: 10:00 AM - 2:00 PM<br>Sunday: Closed</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FAQ Section -->
+        <div class="faq-section">
+            <div class="section-title">
+                <h2>Frequently Asked Questions</h2>
+                <p>Quick answers to common questions about HealthAdvisor</p>
+            </div>
+            
+            <div class="faq-grid">
+                <div class="faq-card">
+                    <h3><i class="fas fa-question-circle"></i> Is HealthAdvisor a replacement for doctors?</h3>
+                    <p>No, HealthAdvisor is designed to provide preliminary health information and should not replace professional medical advice. Always consult healthcare professionals for diagnosis and treatment.</p>
+                </div>
+                
+                <div class="faq-card">
+                    <h3><i class="fas fa-shield-alt"></i> Is my health data secure?</h3>
+                    <p>Yes, we take data privacy seriously. All your health information is encrypted and stored securely. We comply with data protection regulations to ensure your privacy.</p>
+                </div>
+                
+                <div class="faq-card">
+                    <h3><i class="fas fa-robot"></i> How accurate is the AI Health Advisor?</h3>
+                    <p>Our AI is trained on medical databases and provides general health information. While we strive for accuracy, always verify critical health information with healthcare professionals.</p>
+                </div>
+                
+                <div class="faq-card">
+                    <h3><i class="fas fa-crown"></i> What are the premium features?</h3>
+                    <p>Premium features include advanced AI health insights, doctor booking, health record management, and detailed analytics. Upgrade for comprehensive health management.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Support Features -->
+        <div class="support-features">
+            <div class="section-title">
+                <h2>How Can We Help You?</h2>
+                <p>Explore our support options and resources</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3>AI Health Support</h3>
+                    <p>Get instant answers to your health questions with our AI Health Advisor</p>
+                    <button class="feature-btn" onclick="window.location.href='/ai'">Chat Now</button>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon" style="background-color: var(--secondary);">
+                        <i class="fas fa-symptoms"></i>
+                    </div>
+                    <h3>Symptom Checker</h3>
+                    <p>Check your symptoms and get possible conditions with our intelligent system</p>
+                    <button class="feature-btn" style="border-color: var(--secondary); color: var(--secondary);" onclick="window.location.href='/symptoms'">Check Symptoms</button>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon" style="background-color: var(--accent);">
+                        <i class="fas fa-user-md"></i>
+                    </div>
+                    <h3>Doctor Consultation</h3>
+                    <p>Connect with healthcare professionals for personalized medical advice</p>
+                    <button class="feature-btn" style="border-color: var(--accent); color: var(--accent);">Book Appointment</button>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon" style="background-color: var(--warning);">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <h3>24/7 Support</h3>
+                    <p>Our support team is available to help you with any questions or issues</p>
+                    <button class="feature-btn" style="border-color: var(--warning); color: var(--warning);">Get Support</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer - Same as ai.html -->
+    <footer class="footer">
+        <div class="footer-top">
+            <div class="footer-contact">
+                <i class="fas fa-phone"></i>
+                <p>(+91) 70589 03447</p>
+            </div>
+            <div class="footer-contact">
+                <i class="fas fa-envelope"></i>
+                <p>kalpeshdukhande1@gmail.com</p>
+            </div>
+            <div class="footer-contact">
+                <i class="fas fa-map-marker-alt"></i>
+                <p>17 Amba wadi, Achole road, Nallasopara (East), Palghar 401209</p>
+            </div>
+        </div>
+
+        <div class="footer-middle">
+            <div class="footer-links">
+                <h3>About</h3>
+                <ul>
+                    <li>Our story</li>
+                    <li>Awards</li>
+                    <li>Our Team</li>
+                    <li>Career</li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h3>Company</h3>
+                <ul>
+                    <li>Our services</li>
+                    <li>Clients</li>
+                    <li>Contact</li>
+                    <li>Press</li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h3>Resources</h3>
+                <ul>
+                    <li>Blog</li>
+                    <li>Newsletter</li>
+                    <li>Privacy Policy</li>
+                </ul>
+            </div>
+            <div class="footer-subscribe">
+                <h3>Subscribe</h3>
+                <form onsubmit="subscribeNewsletter(event)">
+                    <input type="email" placeholder="Enter email address" required>
+                    <button type="submit"><i class="fa-solid fa-arrow-right"></i></button>
+                </form>
+                <p>Get health tips and updates in your mailbox</p>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>© 2025 Kalpesh D/HealthAdvisor. All rights reserved.</p>
+            <div class="social-icons">
+                <i class="fab fa-twitter"></i>
+                <i class="fab fa-facebook-f"></i>
+                <i class="fab fa-instagram"></i>
+                <i class="fab fa-whatsapp"></i>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Contact form functionality
+        function submitContactForm(event) {
+            event.preventDefault();
+            
+            const formData = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                subject: document.getElementById('subject').value,
+                message: document.getElementById('message').value
+            };
+            
+            // Simulate form submission
+            console.log('Form submitted:', formData);
+            
+            // Show success message
+            alert('Thank you for your message, ' + formData.name + '! We will get back to you within 24 hours.');
+            
+            // Reset form
+            document.getElementById('contactForm').reset();
+            
+            // In a real application, you would send this data to your backend
+            // fetch('/contact', {
+            //     method: 'POST',
+            //     headers: {
+            //         'Content-Type': 'application/json',
+            //     },
+            //     body: JSON.stringify(formData)
+            // })
+            // .then(response => response.json())
+            // .then(data => {
+            //     alert('Message sent successfully!');
+            //     document.getElementById('contactForm').reset();
+            // })
+            // .catch(error => {
+            //     alert('Error sending message. Please try again.');
+            // });
+        }
+
+        function subscribeNewsletter(event) {
+            event.preventDefault();
+            const email = event.target.querySelector('input[type="email"]').value;
+            alert('Thank you for subscribing with: ' + email + '\nYou will receive health updates and tips.');
+            event.target.reset();
+        }
+
+        // Initialize contact page
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('HealthAdvisor Contact page loaded successfully');
+            
+            // Add animation to elements when they come into view
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(function(entry) {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+
+            // Observe elements for animation
+            const animatedElements = document.querySelectorAll('.info-card, .faq-card, .feature-card');
+            animatedElements.forEach(function(el) {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(20px)';
+                el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(el);
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Health Advisor</title>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+
+</head>
+
+
+<body id="home">
+
+<header class="navbar">
+  <div class="container">
+    <div class="logo">
+      <img src="{{ url_for('static', filename='img/logo.jpg') }}" alt="Logo" height="40" style="vertical-align: middle;">
+      <span>HealthAdvisor</span>
+    </div>
+  
+    <nav class="nav-links">
+      <a href="{{ url_for('home') }}">Home Page</a>
+      <a href="{{ url_for('symptoms') }}">Symptoms Page</a>
+      <a href="{{ url_for('dashboard') }}">Dashboard</a>
+      <a href="{{ url_for('contact') }}">Contact</a>
+      <a href="{{ url_for('ai') }}"><i class="fa-solid fa-microchip"></i></a>
+      {% if session.user_id %}
+        <a href="{{ url_for('logout') }}" class="logout-btn">
+            <i class="fa-solid fa-right-from-bracket"></i> Logout
+        </a>
+    {% else %}
+        <a href="{{ url_for('login') }}" class="login-btn">
+            <i class="fa-solid fa-right-to-bracket"></i> Login
+        </a>
+    {% endif %}
+    </nav>
+  </div>
+</header>
+
+<section id="hero">
+  <h4>Health-is-Wealth</h4>
+  <h2>Specialize health consultants for</h2>
+  <h1>Each or Every disease</h1>
+  <p>Unlock premium features with 40% off!</p>
+  <button type="button" class="btn btn-outline-light">
+ {% if session.user_id %}
+        <a href="{{ url_for('logout') }}" class="logout-btn">
+            <i class="fa-solid fa-right-from-bracket"></i> Logout
+        </a>
+    {% else %}
+        <a href="{{ url_for('login') }}" class="login-btn">
+            <i class="fa-solid fa-right-to-bracket"></i> Login
+        </a>
+    {% endif %}
+    </button>
+</section>
+
+<section class="features">
+  <h4>Free Features</h4>
+  <div class="cards">
+    <div class="card">
+      <i class="fa-solid fa-notes-medical"></i>
+      <h2>Symptoms Checker</h2>
+      <p>Input your symptoms and get instant suggestions</p>
+    </div>
+    <div class="card">
+      <i class="fa-solid fa-pills"></i>
+      <h2>Medicine Reminders</h2>
+      <p>Set and reminder for daily medication.</p>
+    </div>
+    <div class="card">
+      <i class="fa-solid fa-heart-pulse"></i>
+      <h2>Health Tips</h2>
+      <p>Read daily tips curated for you.</p>
+    </div>
+  </div>
+  <h4>Premium Features</h4>
+  <div class="cards">
+    <div class="card">
+      <i class="fa-solid fa-brain"></i>
+      <h2>Ai-Powered Advice</h2>
+      <p>Personalization AI health recommendations based on your history.</p>
+    </div>
+    <div class="card">
+      <i class="fa-solid fa-user-md"></i>
+      <h2>Doctor Booking</h2>
+      <p>Book appointments with trusted specialist in seconds.</p>
+    </div>
+    <div class="card">
+      <i class="fa-solid fa-file-medical"></i>
+      <h2>Health Records</h2>
+      <p>Upload and manage your prescriptions and reports securely</p>
+    </div>
+  </div>
+  <div class="premium">
+   <button class="button">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 24">
+        <path d="m18 0 8 12 10-8-4 20H4L0 4l10 8 8-12z"></path>
+    </svg>
+    Unlock Pro
+</button>
+  </div>
+</section>
+
+
+<!-- footer -->
+  <footer class="footer">
+    <div class="footer-top">
+      <div class="footer-contact">
+        <i class="fas fa-phone"></i>
+        <p>(+91) 70589 03447</p>
+      </div>
+      <div class="footer-contact">
+        <i class="fas fa-envelope"></i>
+        <p>kalpeshdukhande1@gemail.com</p>
+      </div>
+      <div class="footer-contact">
+        <i class="fas fa-map-marker-alt"></i>
+        <p>17 Amba wadi., Achole road, Nallasopara ( East ), Palghar 401209</p>
+      </div>
+    </div>
+
+    <div class="footer-middle">
+      <div class="footer-links">
+        <h3>About</h3>
+        <ul>
+          <li>Our story</li>
+          <li>Awards</li>
+          <li>Our Team</li>
+          <li>Career</li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h3>Company</h3>
+        <ul>
+          <li>Our services</li>
+          <li>Clients</li>
+          <li>Contact</li>
+          <li>Press</li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h3>Resources</h3>
+        <ul>
+          <li>Blog</li>
+          <li>Newsletter</li>
+          <li>Privacy Policy</li>
+        </ul>
+      </div>
+      <div class="footer-subscribe">
+        <h3>Subscribe</h3>
+        <form>
+          <input type="email" placeholder="Enter email address">
+          <button type="submit"><i class="fa-solid fa-arrow-right"></i></button>
+        </form>
+        <p>Get digital marketing updates in your mailbox</p>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p> "© [2025] [Kalpesh D/HealthAdvisor]. All rights reserved."</p>
+      <div class="social-icons">
+        <i class="fab fa-twitter"></i>
+        <i class="fab fa-facebook-f"></i>
+        <i class="fab fa-instagram"></i>
+        <i class="fab fa-whatsapp"></i>
+      </div>
+    </div>
+  </footer>
+
+<!-- JS file -->
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

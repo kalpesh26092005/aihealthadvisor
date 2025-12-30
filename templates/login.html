@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Health Advisor</title>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+
+</head>
+
+
+<body class="body-container ">
+    
+    <header class="navbar">
+        <div class="container">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='img/logo.jpg') }}" alt="Logo" height="40" style="vertical-align: middle;">
+                <span>HealthAdvisor</span>
+            </div>
+            <nav class="nav-links">
+                <a href="{{ url_for('home') }}">Home Page</a>
+                <a href="{{ url_for('symptoms') }}">Symptoms Page</a>
+                <a href="{{ url_for('dashboard') }}">Dashboard</a>
+                <a href="{{ url_for('contact') }}">Contact</a>
+                <a href="{{ url_for('ai') }}"><i class="fa-solid fa-microchip"></i></a>
+                {% if session.user_id %}
+        <a href="{{ url_for('logout') }}" class="logout-btn">
+            <i class="fa-solid fa-right-from-bracket"></i> Logout
+        </a>
+    {% else %}
+        <a href="{{ url_for('login') }}" class="login-btn">
+            <i class="fa-solid fa-right-to-bracket"></i> Login
+        </a>
+    {% endif %}
+            </nav>
+        </div>
+    </header>
+    
+   <div class="container-form">
+    <div class="heading">Sign In</div>
+    <!-- CHANGE: Remove action="" and add id -->
+    <form id="loginForm" class="form">
+      <input required="" class="input" type="email" name="email" id="email" placeholder="E-mail">
+      <input required="" class="input" type="password" name="password" id="password" placeholder="Password">
+      <span class="forgot-password"><a href="#">Forgot Password ?</a></span>
+      <span class="forgot-password"><a href="{{ url_for('register') }}">Register now..</a></span>
+      
+      <!-- CHANGE: Change type from submit to button to prevent form submission -->
+      <input class="login-button" type="button" id="loginButton" value="Sign In">
+      
+    </form>
+    <div class="social-account-container">
+        <span class="title">Or Sign in with</span>
+        <div class="social-accounts">
+          <button class="social-button google">
+            <svg class="svg" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 488 512">
+              <path d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 123 24.5 166.3 64.9l-67.5 64.9C258.5 52.6 94.3 116.6 94.3 256c0 86.5 69.1 156.6 153.7 156.6 98.2 0 135-70.4 140.8-106.9H248v-85.3h236.1c2.3 12.7 3.9 24.9 3.9 41.4z"></path>
+            </svg></button>
+          <button class="social-button apple">
+            <svg class="svg" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 384 512">
+              <path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"></path>
+            </svg>
+          </button>
+          <button class="social-button twitter">
+            <svg class="svg" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512">
+              <path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+      <span class="agreement"><a href="#">Learn user licence agreement</a></span>
+  </div>
+
+<!-- footer -->
+  <footer class="footer">
+    <div class="footer-top">
+      <div class="footer-contact">
+        <i class="fas fa-phone"></i>
+        <p>(+91) 70589 03447</p>
+      </div>
+      <div class="footer-contact">
+        <i class="fas fa-envelope"></i>
+        <p>kalpeshdukhande1@gemail.com</p>
+      </div>
+      <div class="footer-contact">
+        <i class="fas fa-map-marker-alt"></i>
+        <p>17 Amba wadi., Achole road, Nallasopara ( East ), Palghar 401209</p>
+      </div>
+    </div>
+
+    <div class="footer-middle">
+      <div class="footer-links">
+        <h3>About</h3>
+        <ul>
+          <li>Our story</li>
+          <li>Awards</li>
+          <li>Our Team</li>
+          <li>Career</li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h3>Company</h3>
+        <ul>
+          <li>Our services</li>
+          <li>Clients</li>
+          <li>Contact</li>
+          <li>Press</li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h3>Resources</h3>
+        <ul>
+          <li>Blog</li>
+          <li>Newsletter</li>
+          <li>Privacy Policy</li>
+        </ul>
+      </div>
+      <div class="footer-subscribe">
+        <h3>Subscribe</h3>
+        <form>
+          <input type="email" placeholder="Enter email address">
+          <button type="submit"><i class="fa-solid fa-arrow-right"></i></button>
+        </form>
+        <p>Get digital marketing updates in your mailbox</p>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p> "© [2025] [Kalpesh D/HealthAdvisor]. All rights reserved."</p>
+      <div class="social-icons">
+        <i class="fab fa-twitter"></i>
+        <i class="fab fa-facebook-f"></i>
+        <i class="fab fa-instagram"></i>
+        <i class="fab fa-whatsapp"></i>
+      </div>
+    </div>
+  </footer>
+
+<!-- JS file -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const loginForm = document.getElementById('loginForm');
+    const loginButton = document.getElementById('loginButton');
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+
+    loginButton.addEventListener('click', async function(e) {
+        e.preventDefault();
+
+        const email = emailInput.value.trim();
+        const password = passwordInput.value.trim();
+
+        // Validation
+        if (!email || !password) {
+            alert("Please enter email and password.");
+            return;
+        }
+
+        // Email format validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            alert("Please enter a valid email address.");
+            return;
+        }
+
+        // Disable button during request
+        loginButton.disabled = true;
+        loginButton.value = "Signing in...";
+
+        try {
+            const response = await fetch('/api/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    email: email,
+                    password: password
+                })
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                alert("Login successful! Redirecting to dashboard...");
+                // Redirect to dashboard
+                window.location.href = '/dashboard';
+            } else {
+                alert(result.message || "Login failed. Please check your credentials.");
+                // Reset button
+                loginButton.disabled = false;
+                loginButton.value = "Sign In";
+            }
+
+        } catch (error) {
+            console.error('Login error:', error);
+            alert("Network error. Please try again.");
+            // Reset button
+            loginButton.disabled = false;
+            loginButton.value = "Sign In";
+        }
+    });
+
+    // Allow Enter key to trigger login
+    loginForm.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            loginButton.click();
+        }
+    });
+});
+</script>
+</body>
+</html>

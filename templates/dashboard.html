@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - HealthAdvisor</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2ecc71;
+            --primary-dark: #27ae60;
+            --secondary: #3498db;
+            --accent: #9b59b6;
+            --danger: #e74c3c;
+            --warning: #f39c12;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --gray: #95a5a6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: var(--dark);
+            overflow-x: hidden;
+        }
+
+        /* Header/Navbar Styles - Same as ai.html */
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #2ecc71;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo span {
+            color: #27ae60;
+        }
+
+        .navbar {
+            background-color: #fff;
+            padding: 20px 0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-links a {
+            margin-left: 25px;
+            text-decoration: none;
+            font-weight: 500;
+            color: var(--dark);
+            position: relative;
+            transition: color 0.3s;
+        }
+
+        .nav-links a::after {
+            content: "";
+            position: absolute;
+            width: 0%;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background-color: var(--primary-dark);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .nav-links a.active {
+            color: var(--primary);
+        }
+
+        .nav-links a.active::after {
+            width: 100%;
+        }
+
+        /* Dashboard Content Styles */
+        .dashboard-hero {
+            background: linear-gradient(135deg, #2ecc71, #3498db);
+            color: white;
+            padding: 60px 0;
+            text-align: center;
+        }
+
+        .dashboard-hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .dashboard-hero p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+            transition: transform 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            margin-right: 20px;
+            font-size: 1.5rem;
+        }
+
+        .stat-info h3 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .stat-info p {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        /* Dashboard Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.12);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .card-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.3rem;
+        }
+
+        .icon-primary {
+            background-color: var(--primary);
+        }
+
+        .icon-secondary {
+            background-color: var(--secondary);
+        }
+
+        .icon-accent {
+            background-color: var(--accent);
+        }
+
+        .icon-warning {
+            background-color: var(--warning);
+        }
+
+        /* Features Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .feature-card {
+            background-color: white;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.12);
+        }
+
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            color: white;
+            font-size: 2rem;
+        }
+
+        .feature-card h3 {
+            margin-bottom: 15px;
+            font-weight: 600;
+            font-size: 1.3rem;
+        }
+
+        .feature-card p {
+            color: var(--gray);
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .feature-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+        }
+
+        .feature-btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        /* Health Tips */
+        .health-tips {
+            margin-top: 40px;
+        }
+
+        .tips-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+        }
+
+        .tip-card {
+            background-color: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s;
+        }
+
+        .tip-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .tip-card h4 {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            font-size: 1.2rem;
+        }
+
+        .tip-card h4 i {
+            margin-right: 12px;
+            color: var(--primary);
+            font-size: 1.3rem;
+        }
+
+        .tip-card p {
+            color: var(--gray);
+            line-height: 1.6;
+        }
+
+        /* Upgrade Banner */
+        .upgrade-banner {
+            background: linear-gradient(135deg, var(--accent), #8e44ad);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .upgrade-btn {
+            background-color: white;
+            color: var(--accent);
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .upgrade-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Footer Styles - Same as ai.html */
+        .footer {
+            background-color: #303131;
+            color: #ccc;
+            padding: 40px 20px 20px;
+            margin-top: 60px;
+        }
+
+        .footer-top {
+            display: flex;
+            justify-content: space-around;
+            text-align: center;
+            padding-bottom: 30px;
+            border-bottom: 1px solid #333;
+            flex-wrap: wrap;
+        }
+
+        .footer-contact {
+            max-width: 300px;
+            margin: 10px;
+        }
+
+        .footer-contact i {
+            font-size: 30px;
+            color: #00aaff;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .footer-contact p {
+            color: #fff;
+        }
+
+        .footer-middle {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            padding: 40px 20px;
+        }
+
+        .footer-links,
+        .footer-subscribe {
+            flex: 1;
+            min-width: 200px;
+            margin: 20px;
+        }
+
+        .footer-links h3,
+        .footer-subscribe h3 {
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        .footer-links ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-links ul li {
+            margin-bottom: 8px;
+            color: #999;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .footer-links ul li:hover {
+            color: #00aaff;
+        }
+
+        .footer-subscribe form {
+            display: flex;
+            max-width: 300px;
+        }
+
+        .footer-subscribe input[type="email"] {
+            padding: 10px;
+            flex: 1;
+            border: none;
+            border-radius: 3px 0 0 3px;
+        }
+
+        .footer-subscribe button {
+            background: #00aaff;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 0 3px 3px 0;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .footer-subscribe button:hover {
+            background: #0088cc;
+        }
+
+        .footer-subscribe p {
+            font-size: 12px;
+            margin-top: 10px;
+            color: #777;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #333;
+            padding-top: 20px;
+            text-align: center;
+            font-size: 14px;
+            color: #777;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .social-icons {
+            margin-top: 10px;
+        }
+
+        .social-icons i {
+            margin: 0 10px;
+            color: #ccc;
+            cursor: pointer;
+            font-size: 16px;
+            transition: color 0.3s;
+        }
+
+        .social-icons i:hover {
+            color: #00aaff;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links a {
+                margin-left: 15px;
+                font-size: 0.9rem;
+            }
+            
+            .dashboard-hero h1 {
+                font-size: 2rem;
+            }
+            
+            .upgrade-banner {
+                flex-direction: column;
+                text-align: center;
+                gap: 20px;
+            }
+            
+            .footer-top,
+            .footer-middle {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header/Navbar - Same as ai.html -->
+    <header class="navbar">
+        <div class="container">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='img/logo.jpg') }}" alt="Logo" height="40" style="vertical-align: middle;">
+                <span>HealthAdvisor</span>
+            </div>
+            <nav class="nav-links">
+                <a href="{{ url_for('home') }}">Home Page</a>
+                <a href="{{ url_for('symptoms') }}">Symptoms Page</a>
+                <a href="{{ url_for('dashboard') }}" class="active">Dashboard</a>
+                <a href="{{ url_for('contact') }}">Contact</a>
+                <a href="{{ url_for('ai') }}"><i class="fa-solid fa-microchip"></i></a>
+                {% if session.user_id %}
+        <a href="{{ url_for('logout') }}" class="logout-btn">
+            <i class="fa-solid fa-right-from-bracket"></i> Logout
+        </a>
+    {% else %}
+        <a href="{{ url_for('login') }}" class="login-btn">
+            <i class="fa-solid fa-right-to-bracket"></i> Login
+        </a>
+    {% endif %}
+            </nav>
+        </div>
+    </header>
+
+    <!-- Dashboard Hero Section -->
+    <section class="dashboard-hero">
+        <div class="container">
+            <h1>Welcome to Your Health Dashboard</h1>
+            <p>Manage your health journey with AI-powered insights and tools</p>
+        </div>
+    </section>
+
+    <!-- Dashboard Content -->
+    <div class="dashboard-container">
+        <!-- Upgrade Banner -->
+        <div class="upgrade-banner">
+            <div>
+                <h3>Unlock Premium Features</h3>
+                <p>Get AI-powered health insights, doctor booking, and advanced analytics</p>
+            </div>
+            <div>
+                <button class="upgrade-btn">Upgrade Now</button>
+            </div>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon" style="background-color: var(--primary);">
+                    <i class="fas fa-stethoscope"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>12</h3>
+                    <p>Symptom Checks</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background-color: var(--secondary);">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>24</h3>
+                    <p>AI Consultations</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background-color: var(--accent);">
+                    <i class="fas fa-pills"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>5</h3>
+                    <p>Active Reminders</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background-color: var(--warning);">
+                    <i class="fas fa-heart"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>85%</h3>
+                    <p>Health Score</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions Grid -->
+        <h2 style="margin-bottom: 20px; color: var(--dark);">Quick Actions</h2>
+        <div class="dashboard-grid">
+            <!-- Symptom Checker Card -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Symptom Checker</h3>
+                    <div class="card-icon icon-primary">
+                        <i class="fas fa-notes-medical"></i>
+                    </div>
+                </div>
+                <p>Check your symptoms and get possible conditions with severity levels</p>
+                <div style="margin-top: 20px;">
+                    <input type="text" placeholder="Enter your symptoms..." style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 15px; font-size: 1rem;">
+                    <button class="feature-btn" onclick="checkSymptoms()">Check Symptoms</button>
+                </div>
+            </div>
+
+            <!-- AI Health Advisor Card -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">AI Health Advisor</h3>
+                    <div class="card-icon icon-secondary">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                </div>
+                <p>Get AI-powered health advice and personalized recommendations</p>
+                <div style="margin-top: 20px;">
+                    <button class="feature-btn" onclick="window.location.href='/ai'">Chat with AI Advisor</button>
+                </div>
+            </div>
+
+            <!-- Medicine Reminder Card -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Medicine Reminder</h3>
+                    <div class="card-icon icon-accent">
+                        <i class="fas fa-pills"></i>
+                    </div>
+                </div>
+                <p>Set and manage your medication schedules</p>
+                <div style="margin-top: 20px;">
+                    <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 15px; border-left: 4px solid var(--accent);">
+                        <p style="margin: 0; font-weight: 500;"><strong>Paracetamol</strong> - 08:00 AM</p>
+                        <p style="margin: 5px 0 0 0; color: var(--gray); font-size: 0.9rem;">500mg - For headache</p>
+                    </div>
+                    <button class="feature-btn" onclick="addReminder()">Add New Reminder</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- All Features Grid -->
+        <h2 style="margin: 40px 0 20px; color: var(--dark);">All Features</h2>
+        <div class="features-grid">
+            <div class="feature-card" onclick="window.location.href='/symptoms'">
+                <div class="feature-icon" style="background-color: var(--primary);">
+                    <i class="fas fa-notes-medical"></i>
+                </div>
+                <h3>Symptom Checker</h3>
+                <p>Input symptoms and get possible conditions with severity levels and recommendations</p>
+                <button class="feature-btn">Use Now</button>
+            </div>
+
+            <div class="feature-card" onclick="window.location.href='/ai'">
+                <div class="feature-icon" style="background-color: var(--secondary);">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <h3>AI Health Advisor</h3>
+                <p>Chat with our advanced AI for personalized health advice and medical guidance</p>
+                <button class="feature-btn">Start Chat</button>
+            </div>
+
+            <div class="feature-card" onclick="openReminders()">
+                <div class="feature-icon" style="background-color: var(--accent);">
+                    <i class="fas fa-pills"></i>
+                </div>
+                <h3>Medicine Reminder</h3>
+                <p>Set, manage, and track your medication schedules with smart notifications</p>
+                <button class="feature-btn">Set Reminder</button>
+            </div>
+
+            <div class="feature-card" onclick="showHealthTips()">
+                <div class="feature-icon" style="background-color: var(--warning);">
+                    <i class="fas fa-heartbeat"></i>
+                </div>
+                <h3>Health Tips</h3>
+                <p>Daily health tips, wellness advice, and preventive care recommendations</p>
+                <button class="feature-btn">View Tips</button>
+            </div>
+
+            <div class="feature-card" onclick="upgradePremium()">
+                <div class="feature-icon" style="background-color: #e74c3c;">
+                    <i class="fas fa-user-md"></i>
+                </div>
+                <h3>Doctor Booking</h3>
+                <p>Book appointments with certified healthcare professionals (Premium Feature)</p>
+                <button class="feature-btn" style="background-color: #e74c3c;">Book Now</button>
+            </div>
+
+            <div class="feature-card" onclick="upgradePremium()">
+                <div class="feature-icon" style="background-color: #34495e;">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h3>Health Analytics</h3>
+                <p>Track your health metrics and progress over time with detailed analytics (Premium)</p>
+                <button class="feature-btn" style="background-color: #34495e;">View Analytics</button>
+            </div>
+        </div>
+
+        <!-- Health Tips Section -->
+        <div class="health-tips">
+            <h2 style="margin: 40px 0 20px; color: var(--dark);">Today's Health Tips</h2>
+            <div class="tips-container">
+                <div class="tip-card">
+                    <h4><i class="fas fa-apple-alt"></i> Nutrition Tip</h4>
+                    <p>Include a variety of colorful fruits and vegetables in your diet for essential vitamins and minerals. Aim for at least 5 servings per day.</p>
+                </div>
+                <div class="tip-card">
+                    <h4><i class="fas fa-running"></i> Exercise Tip</h4>
+                    <p>Aim for at least 30 minutes of moderate exercise daily to maintain cardiovascular health and boost your immune system.</p>
+                </div>
+                <div class="tip-card">
+                    <h4><i class="fas fa-bed"></i> Sleep Tip</h4>
+                    <p>Maintain a consistent sleep schedule of 7-9 hours per night for optimal health, cognitive function, and recovery.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer - Same as ai.html -->
+    <footer class="footer">
+        <div class="footer-top">
+            <div class="footer-contact">
+                <i class="fas fa-phone"></i>
+                <p>(+91) 70589 03447</p>
+            </div>
+            <div class="footer-contact">
+                <i class="fas fa-envelope"></i>
+                <p>kalpeshdukhande1@gmail.com</p>
+            </div>
+            <div class="footer-contact">
+                <i class="fas fa-map-marker-alt"></i>
+                <p>17 Amba wadi, Achole road, Nallasopara (East), Palghar 401209</p>
+            </div>
+        </div>
+
+        <div class="footer-middle">
+            <div class="footer-links">
+                <h3>About</h3>
+                <ul>
+                    <li>Our story</li>
+                    <li>Awards</li>
+                    <li>Our Team</li>
+                    <li>Career</li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h3>Company</h3>
+                <ul>
+                    <li>Our services</li>
+                    <li>Clients</li>
+                    <li>Contact</li>
+                    <li>Press</li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h3>Resources</h3>
+                <ul>
+                    <li>Blog</li>
+                    <li>Newsletter</li>
+                    <li>Privacy Policy</li>
+                </ul>
+            </div>
+            <div class="footer-subscribe">
+                <h3>Subscribe</h3>
+                <form onsubmit="subscribeNewsletter(event)">
+                    <input type="email" placeholder="Enter email address" required>
+                    <button type="submit"><i class="fa-solid fa-arrow-right"></i></button>
+                </form>
+                <p>Get digital marketing updates in your mailbox</p>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>© 2025 Kalpesh D/HealthAdvisor. All rights reserved.</p>
+            <div class="social-icons">
+                <i class="fab fa-twitter"></i>
+                <i class="fab fa-facebook-f"></i>
+                <i class="fab fa-instagram"></i>
+                <i class="fab fa-whatsapp"></i>
+            </div>
+        </div>
+    </footer>
+
+   <script>
+    // Load user stats on page load
+    document.addEventListener('DOMContentLoaded', async function() {
+        console.log('HealthAdvisor Dashboard loaded successfully');
+        
+        // Add active state to current page in navigation
+        const currentPage = window.location.pathname;
+        const navLinks = document.querySelectorAll('.nav-links a');
+        navLinks.forEach(link => {
+            if (link.getAttribute('href') === currentPage) {
+                link.classList.add('active');
+            }
+        });
+        
+        // Load user stats
+        await loadUserStats();
+    });
+    
+    // Function to load user stats
+    async function loadUserStats() {
+        try {
+            console.log('Loading user stats...');
+            
+            const response = await fetch('/api/user/stats', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include'  // Important for session cookies
+            });
+            
+            if (!response.ok) {
+                console.error('Failed to load stats:', response.status);
+                return;
+            }
+            
+            const result = await response.json();
+            
+            if (result.success) {
+                const stats = result.stats;
+                
+                // Update stat cards with real data
+                updateStatCard(0, stats.symptom_checks, 'Symptom Checks');
+                updateStatCard(1, stats.ai_consultations, 'AI Consultations');
+                updateStatCard(2, stats.active_reminders, 'Active Reminders');
+                updateStatCard(3, `${stats.health_score}%`, 'Health Score');
+                
+                console.log('Stats loaded successfully:', stats);
+            }
+            
+        } catch (error) {
+            console.error('Error loading stats:', error);
+        }
+    }
+    
+    // Function to update stat card
+    function updateStatCard(index, value, label) {
+        const statCards = document.querySelectorAll('.stat-card');
+        if (statCards[index]) {
+            const statInfo = statCards[index].querySelector('.stat-info');
+            if (statInfo) {
+                const h3 = statInfo.querySelector('h3');
+                const p = statInfo.querySelector('p');
+                
+                if (h3) h3.textContent = value;
+                if (p) p.textContent = label;
+            }
+        }
+    }
+    
+    // Dashboard functionality
+    async function checkSymptoms() {
+        const symptomInput = document.querySelector('input[placeholder="Enter your symptoms..."]');
+        const symptoms = symptomInput.value.trim();
+        
+        if (!symptoms) {
+            alert('Please enter your symptoms first.');
+            symptomInput.focus();
+            return;
+        }
+        
+        try {
+            // Show loading state
+            const button = document.querySelector('.feature-btn');
+            const originalText = button.textContent;
+            button.textContent = 'Analyzing...';
+            button.disabled = true;
+            
+            const response = await fetch('/api/symptoms/check', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: JSON.stringify({ symptoms: symptoms })
+            });
+            
+            const result = await response.json();
+            
+            if (result.success) {
+                alert('Symptoms analyzed successfully! Redirecting to detailed view...');
+                // You can redirect to a detailed symptoms page or show results inline
+                window.location.href = '/symptoms?symptoms=' + encodeURIComponent(symptoms);
+            } else {
+                alert('Error: ' + result.message);
+            }
+            
+        } catch (error) {
+            console.error('Error checking symptoms:', error);
+            alert('Network error. Please try again.');
+        } finally {
+            // Restore button
+            const button = document.querySelector('.feature-btn');
+            button.textContent = 'Check Symptoms';
+            button.disabled = false;
+        }
+    }
+
+    function addReminder() {
+        const medicineName = prompt("Enter medicine name:");
+        if (!medicineName) return;
+        
+        const dosage = prompt("Enter dosage (e.g., 500mg):");
+        const time = prompt("Enter reminder time (e.g., 08:00 AM):");
+        
+        // Here you would call an API to save the reminder
+        alert(`Reminder set for ${medicineName} (${dosage}) at ${time}\n\nNote: This is a demo. Real reminder functionality would require backend implementation.`);
+        
+        // Refresh stats to show updated reminder count
+        loadUserStats();
+    }
+
+    function openReminders() {
+        alert('Opening Medicine Reminders management...\nThis would show a list of all your reminders.');
+    }
+
+    function showHealthTips() {
+        alert('Showing Health Tips and Wellness advice...\nThis would display personalized health tips.');
+    }
+
+    function upgradePremium() {
+        alert('Premium Feature!\nUpgrade to access:\n• Doctor Booking\n• Health Analytics\n• Advanced AI Insights\n• Health Records');
+    }
+
+    function subscribeNewsletter(event) {
+        event.preventDefault();
+        const email = event.target.querySelector('input[type="email"]').value;
+        alert('Thank you for subscribing with: ' + email + '\nYou will receive health updates and tips.');
+        event.target.reset();
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Health Advisor</title>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+
+</head>
+
+
+<body id="symptoms">
+    
+    <header class="navbar">
+        <div class="container">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='img/logo.jpg') }}" alt="Logo" height="40" style="vertical-align: middle;">
+                <span>HealthAdvisor</span>
+            </div>
+            <nav class="nav-links">
+                <a href="{{ url_for('home') }}">Home Page</a>
+                <a href="{{ url_for('symptoms') }}">Symptoms Page</a>
+                <a href="{{ url_for('dashboard') }}">Dashboard</a>
+                <a href="{{ url_for('contact') }}">Contact</a>
+                <a href="{{ url_for('ai') }}"><i class="fa-solid fa-microchip"></i></a>
+                {% if session.user_id %}
+        <a href="{{ url_for('logout') }}" class="logout-btn">
+            <i class="fa-solid fa-right-from-bracket"></i> Logout
+        </a>
+    {% else %}
+        <a href="{{ url_for('login') }}" class="login-btn">
+            <i class="fa-solid fa-right-to-bracket"></i> Login
+        </a>
+    {% endif %}
+            </nav>
+        </div>
+    </header>
+<section id="symptoms-hero">
+<h4>Not Feeling Well?</h4>
+<h2>Describe Your Symptoms</h2>
+<h1>We’ll Help You Understand Why</h1>
+<p>Get possible causes, advice, and next steps</p>
+  <a href="#symptom-form">
+  <button type="button" class="transparent-button">Let's Go</button>
+</a>
+</section>
+
+<section id="symptoms">
+<div class="symptoms-container" id="symptom-form">
+  <div class="symptoms-card" data-aos="fade-up" >
+   <form class="symptoms-form" id="symptomsForm">
+    <h2>Check-up Center</h2>
+    <h1>Enter your symptoms, separated by commas</h1>
+    <input type="text" id="symptomsInput" placeholder="Eg: headache, cough, etc" required>
+    <button type="submit" class="check-button" id="checkButton">
+        <span class="button-content">Check-up</span>
+    </button>
+</form>
+<section id="disease-result" style="display: none;">
+  <div class="container section-p1">
+    <h2 class="main-title">Possible Conditions</h2>
+    <div class="result-cards" id="result-cards">
+      <!-- Dynamic cards will be inserted here -->
+    </div>
+  </div>
+</section>
+  </div>
+</div>
+</section>
+
+
+
+
+    <!-- footer -->
+  <footer class="footer">
+    <div class="footer-top">
+      <div class="footer-contact">
+        <i class="fas fa-phone"></i>
+        <p>(+91) 70589 03447</p>
+      </div>
+      <div class="footer-contact">
+        <i class="fas fa-envelope"></i>
+        <p>kalpeshdukhande1@gemail.com</p>
+      </div>
+      <div class="footer-contact">
+        <i class="fas fa-map-marker-alt"></i>
+        <p>17 Amba wadi., Achole road, Nallasopara ( East ), Palghar 401209</p>
+      </div>
+    </div>
+
+    <div class="footer-middle">
+      <div class="footer-links">
+        <h3>About</h3>
+        <ul>
+          <li>Our story</li>
+          <li>Awards</li>
+          <li>Our Team</li>
+          <li>Career</li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h3>Company</h3>
+        <ul>
+          <li>Our services</li>
+          <li>Clients</li>
+          <li>Contact</li>
+          <li>Press</li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h3>Resources</h3>
+        <ul>
+          <li>Blog</li>
+          <li>Newsletter</li>
+          <li>Privacy Policy</li>
+        </ul>
+      </div>
+      <div class="footer-subscribe">
+        <h3>Subscribe</h3>
+        <form>
+          <input type="email" placeholder="Enter email address">
+          <button type="submit"><i class="fa-solid fa-arrow-right"></i></button>
+        </form>
+        <p>Get digital marketing updates in your mailbox</p>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p> "© [2025] [Kalpesh D/HealthAdvisor]. All rights reserved."</p>
+      <div class="social-icons">
+        <i class="fab fa-twitter"></i>
+        <i class="fab fa-facebook-f"></i>
+        <i class="fab fa-instagram"></i>
+        <i class="fab fa-whatsapp"></i>
+      </div>
+    </div>
+  </footer>
+
+<!-- JS file -->
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/aos@2.3.1/dist/aos.js"></script>
+<script>
+  AOS.init();
+</script>
+<script>
+  document.getElementById('symptomsForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const symptoms = document.getElementById('symptomsInput').value.trim();
+    const checkButton = document.getElementById('checkButton');
+    
+    if (!symptoms) {
+        alert("Please enter your symptoms");
+        return;
+    }
+    
+    try {
+        // Show loading
+        checkButton.disabled = true;
+        checkButton.querySelector('.button-content').textContent = 'Analyzing...';
+        
+        const response = await fetch('/api/symptoms/check', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            credentials: 'include',
+            body: JSON.stringify({ symptoms: symptoms })
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            displayResults(result.analysis);
+        } else {
+            alert('Error: ' + result.message);
+        }
+        
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Network error. Please try again.');
+    } finally {
+        // Reset button
+        checkButton.disabled = false;
+        checkButton.querySelector('.button-content').textContent = 'Check-up';
+    }
+});
+
+function displayResults(analysis) {
+    const resultSection = document.getElementById("disease-result");
+    const resultCards = document.getElementById("result-cards");
+    
+    // Clear previous results
+    resultCards.innerHTML = "";
+    
+    // For debugging
+    console.log("Full analysis:", analysis);
+    console.log("Conditions:", analysis.conditions);
+    
+    // Check if we have conditions
+    if (analysis.conditions && Array.isArray(analysis.conditions)) {
+        // Check what type of data we have
+        if (analysis.conditions.length > 0) {
+            
+            // CASE 1: Conditions are strings (like your screenshot)
+            if (typeof analysis.conditions[0] === 'string') {
+                // Create different descriptions for each condition
+                const conditionDescriptions = {
+                    "viral infection": "A common viral illness affecting the respiratory system. Symptoms include fever, cough, and fatigue.",
+                    "common cold": "Mild viral infection of the nose and throat. Usually resolves in 7-10 days with rest.",
+                    "flu": "Influenza virus causing fever, body aches, and fatigue. May require antiviral medication.",
+                    "bacterial infection": "Infection caused by bacteria, often requiring antibiotics for treatment.",
+                    "allergies": "Immune system reaction to allergens causing symptoms like sneezing and runny nose.",
+                    "sinusitis": "Inflammation of the sinuses causing facial pain and pressure.",
+                    "bronchitis": "Inflammation of the bronchial tubes causing persistent cough.",
+                    "pneumonia": "Serious lung infection requiring medical attention.",
+                    "covid-19": "Respiratory illness caused by coronavirus. Monitor for breathing difficulties.",
+                    "migraine": "Severe headache often accompanied by nausea and light sensitivity.",
+                    "gastroenteritis": "Stomach flu causing diarrhea, vomiting, and abdominal cramps.",
+                    "asthma": "Chronic condition causing breathing difficulties and wheezing.",
+                    "arthritis": "Joint inflammation causing pain and stiffness.",
+                    "anemia": "Low red blood cell count causing fatigue and weakness.",
+                    "hypertension": "High blood pressure, often asymptomatic but requires monitoring."
+                };
+                
+                // Display each condition with its specific description
+                analysis.conditions.forEach((conditionName, index) => {
+                    // Clean up the condition name
+                    const cleanName = conditionName.toLowerCase().trim();
+                    
+                    // Find matching description or use general one
+                    let description = analysis.recommendations || 'Consult a healthcare professional.';
+                    
+                    // Try to find a specific description
+                    for (const [key, desc] of Object.entries(conditionDescriptions)) {
+                        if (cleanName.includes(key.toLowerCase())) {
+                            description = desc;
+                            break;
+                        }
+                    }
+                    
+                    // If it's a string like "Viral infection (e.g., common cold, flu) – Very common"
+                    // Extract just the main condition name
+                    const displayName = conditionName.split('(')[0].split('–')[0].trim();
+                    
+                    resultCards.innerHTML += `
+                        <div class="result-card">
+                            <h3>${displayName}</h3>
+                            <p>${description}</p>
+                            <span class="tag ${analysis.severity?.toLowerCase() || 'mild'}">
+                                ${analysis.severity || 'Mild'}
+                            </span>
+                        </div>
+                    `;
+                });
+            }
+            // CASE 2: Conditions are objects (ideal)
+            else if (typeof analysis.conditions[0] === 'object') {
+                analysis.conditions.forEach(condition => {
+                    resultCards.innerHTML += `
+                        <div class="result-card">
+                            <h3>${condition.name || condition.condition || 'Condition'}</h3>
+                            <p>${condition.description || condition.desc || condition.info || 'No description available'}</p>
+                            <span class="tag ${condition.severity || analysis.severity?.toLowerCase() || 'mild'}">
+                                ${condition.severity || analysis.severity || 'Mild'}
+                            </span>
+                        </div>
+                    `;
+                });
+            }
+        }
+    } 
+    // CASE 3: No conditions array, but we have analysis text
+    else if (typeof analysis === 'string') {
+        resultCards.innerHTML = `
+            <div class="result-card">
+                <h3>Medical Analysis</h3>
+                <p>${analysis}</p>
+                <span class="tag mild">Analysis</span>
+            </div>
+        `;
+    }
+    // CASE 4: Other structure
+    else {
+        resultCards.innerHTML = `
+            <div class="result-card">
+                <h3>Health Assessment</h3>
+                <p><strong>Recommendations:</strong> ${analysis.recommendations || 'Rest and monitor symptoms'}</p>
+                <p><strong>Severity:</strong> ${analysis.severity || 'Moderate'}</p>
+                ${analysis.see_doctor ? `<p><strong>See Doctor:</strong> ${analysis.see_doctor}</p>` : ''}
+                ${analysis.home_remedies ? `<p><strong>Home Care:</strong> ${analysis.home_remedies}</p>` : ''}
+                <span class="tag ${analysis.severity?.toLowerCase() || 'mild'}">
+                    ${analysis.severity || 'Mild'}
+                </span>
+            </div>
+        `;
+    }
+    
+    resultSection.style.display = 'block';
+    resultSection.scrollIntoView({ behavior: "smooth" });
+}
+</script>
+
+</body>
+</html>
+

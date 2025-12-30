@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Health Advisor - Register</title>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet"/>
+</head>
+
+<body>
+
+<header class="navbar">
+  <div class="container">
+      <div class="logo">
+          <img src="{{ url_for('static', filename='img/logo.jpg') }}" alt="Logo" height="40">
+          <span>HealthAdvisor</span>
+      </div>
+      <nav class="nav-links">
+         <a href="{{ url_for('home') }}">Home Page</a>
+         <a href="{{ url_for('symptoms') }}">Symptoms Page</a>
+         <a href="{{ url_for('dashboard') }}">Dashboard</a>
+         <a href="{{ url_for('contact') }}">Contact</a>
+         <a href="{{ url_for('ai') }}"><i class="fa-solid fa-microchip"></i></a>
+         {% if session.user_id %}
+        <a href="{{ url_for('logout') }}" class="logout-btn">
+            <i class="fa-solid fa-right-from-bracket"></i> Logout
+        </a>
+    {% else %}
+        <a href="{{ url_for('login') }}" class="login-btn">
+            <i class="fa-solid fa-right-to-bracket"></i> Login
+        </a>
+    {% endif %}
+      </nav>
+  </div>
+</header>
+
+<div class="container-form">
+    <div class="heading">Register</div>
+
+    <!-- FIXED FORM — NO ACTION, NO GET REQUEST -->
+    <form id="registerForm" class="form">
+      <input required class="input" type="text" name="username" id="username" placeholder="Enter User Name">
+
+      <input required class="input" type="tel" name="contact" id="contact" 
+             placeholder="Contact No With Country Code (Eg +91 99999 99999)" maxlength="16">
+
+      <input required class="input" type="email" name="email" id="email" placeholder="E-mail">
+
+      <input required class="input" type="password" name="password" id="password" placeholder="Password">
+
+      <input required class="input" type="password" name="repassword" id="repassword" placeholder="Re-Enter Password">
+
+      <span class="forgot-password">
+        <a href="{{ url_for('login') }}">Already have an account?</a>
+      </span>
+
+      <input class="login-button" type="submit" value="Sign Up">
+    </form>
+
+    <div class="social-account-container">
+        <span class="title">Or Sign in with</span>
+        <div class="social-accounts">
+          <button class="social-button google">
+            <i class="fab fa-google"></i>
+          </button>
+          <button class="social-button apple">
+            <i class="fab fa-apple"></i>
+          </button>
+          <button class="social-button twitter">
+            <i class="fab fa-twitter"></i>
+          </button>
+        </div>
+    </div>
+
+    <span class="agreement"><a href="#">Learn user license agreement</a></span>
+</div>
+
+<!-- FOOTER OMITTED FOR BREVITY (Same as your original) -->
+
+<!-- Replace the entire script section in registration.html with this: -->
+<script>
+document.getElementById("registerForm").addEventListener("submit", async function(e) {
+    e.preventDefault();  // stop form from sending GET to /register
+
+    // Get form values
+    const userData = {
+        user_name: document.getElementById("username").value.trim(),
+        contact_number: document.getElementById("contact").value.trim(),
+        email: document.getElementById("email").value.trim().toLowerCase(),
+        password: document.getElementById("password").value,
+        confirm_password: document.getElementById("repassword").value
+    };
+
+    // Client-side validation
+    if (!userData.user_name || !userData.contact_number || !userData.email || 
+        !userData.password || !userData.confirm_password) {
+        alert("All fields are required!");
+        return;
+    }
+
+    if (userData.password !== userData.confirm_password) {
+        alert("Passwords do not match!");
+        return;
+    }
+
+    if (userData.password.length < 6) {
+        alert("Password must be at least 6 characters!");
+        return;
+    }
+
+    try {
+        console.log("Sending registration request:", userData);
+        
+        const response = await fetch("/api/register", {
+            method: "POST",
+            headers: { 
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            },
+            body: JSON.stringify(userData)
+        });
+
+        console.log("Response status:", response.status);
+        
+        const result = await response.json();
+        console.log("Response data:", result);
+        
+        alert(result.message);
+
+        if (result.success) {
+            window.location.href = "/login";
+        }
+    } catch (error) {
+        console.error("Registration Error:", error);
+        alert("Network error. Please check your connection and try again.");
+    }
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Health Advisor</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style1.css') }}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header class="navbar">
+  <div class="container">
+    <div class="logo">
+      <img src="{{ url_for('static', filename='img/logo.jpg') }}" alt="Logo" height="40" style="vertical-align: middle;">
+      <span>HealthAdvisor</span>
+    </div>
+  
+    <nav class="nav-links">
+      <a href="{{ url_for('home') }}">Home Page</a>
+      <a href="{{ url_for('symptoms') }}">Symptoms Page</a>
+      <a href="{{ url_for('dashboard') }}">Dashboard</a>
+      <a href="{{ url_for('contact') }}">Contact</a>
+      <a href="{{ url_for('ai') }}"><i class="fa-solid fa-microchip"></i></a>
+      {% if session.user_id %}
+        <a href="{{ url_for('logout') }}" class="logout-btn">
+            <i class="fa-solid fa-right-from-bracket"></i> Logout
+        </a>
+    {% else %}
+        <a href="{{ url_for('login') }}" class="login-btn">
+            <i class="fa-solid fa-right-to-bracket"></i> Login
+        </a>
+    {% endif %}
+    </nav>
+  </div>
+</header>
+    <div class="containerTop">
+        <header>
+            <h1><i class="fas fa-robot"></i> AI Health Advisor</h1>
+            <div class="stats">
+                <span class="query-count"><i class="fas fa-question-circle"></i> <span id="queryCount">0</span> Queries Solved</span>
+                <div class="popular-topics">
+                    <span><i class="fas fa-fire"></i> Popular Topics:</span>
+                    <span class="topic-tag">Headache</span>
+                    <span class="topic-tag">Back Pain</span>
+                    <span class="topic-tag">Sleep Issues</span>
+                </div>
+            </div>
+        </header>
+
+        <div class="chat-container">
+            <div class="chat-box" id="chatBox">
+                <div class="chat-message bot-message">
+                    <div class="avatar"><i class="fas fa-robot"></i></div>
+                    <div class="message-content">
+                        <p>Hello! I'm your AI Health Advisor. How can I help you with your health concerns today?</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-area">
+                <input type="text" id="userInput" placeholder="Ask any health-related question..." autocomplete="off">
+                <button id="sendButton"><i class="fas fa-paper-plane"></i></button>
+            </div>
+            <div class="disclaimer">
+                <p><i class="fas fa-info-circle"></i> Note: This AI provides general health information only. For serious conditions, please consult a doctor.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- footer -->
+  <footer class="footer">
+    <div class="footer-top">
+      <div class="footer-contact">
+        <i class="fas fa-phone"></i>
+        <p>(+91) 70589 03447</p>
+      </div>
+      <div class="footer-contact">
+        <i class="fas fa-envelope"></i>
+        <p>kalpeshdukhande1@gemail.com</p>
+      </div>
+      <div class="footer-contact">
+        <i class="fas fa-map-marker-alt"></i>
+        <p>17 Amba wadi., Achole road, Nallasopara ( East ), Palghar 401209</p>
+      </div>
+    </div>
+
+    <div class="footer-middle">
+      <div class="footer-links">
+        <h3>About</h3>
+        <ul>
+          <li>Our story</li>
+          <li>Awards</li>
+          <li>Our Team</li>
+          <li>Career</li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h3>Company</h3>
+        <ul>
+          <li>Our services</li>
+          <li>Clients</li>
+          <li>Contact</li>
+          <li>Press</li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h3>Resources</h3>
+        <ul>
+          <li>Blog</li>
+          <li>Newsletter</li>
+          <li>Privacy Policy</li>
+        </ul>
+      </div>
+      <div class="footer-subscribe">
+        <h3>Subscribe</h3>
+        <form>
+          <input type="email" placeholder="Enter email address">
+          <button type="submit"><i class="fa-solid fa-arrow-right"></i></button>
+        </form>
+        <p>Get digital marketing updates in your mailbox</p>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p> "© [2025] [Kalpesh D/HealthAdvisor]. All rights reserved."</p>
+      <div class="social-icons">
+        <i class="fab fa-twitter"></i>
+        <i class="fab fa-facebook-f"></i>
+        <i class="fab fa-instagram"></i>
+        <i class="fab fa-whatsapp"></i>
+      </div>
+    </div>
+  </footer>
+
+    <script src="{{ url_for('static', filename='script1.js') }}"></script>
+</body>
+</html>
